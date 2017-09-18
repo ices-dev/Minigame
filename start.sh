@@ -114,7 +114,7 @@ zeichnerand
 PHPOS=$((LCOL/2))
 PVPOS=$((LROW/2))
 GHPOS=$(( $RANDOM % $((LCOL-2)) + 1 ))
-GVPOS=$(( $RANDOM % $((LROW-2)) + 1 ))
+GVPOS=$(( $RANDOM % $((LROW-3)) + 1 ))
 tput cup $GVPOS $GHPOS
 printf "$ZEIL"
 tput cup $PVPOS $PHPOS
