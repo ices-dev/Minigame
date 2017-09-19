@@ -64,7 +64,6 @@ hoch() {
         PVPOS=$((PVPOS-1))
         tput cup $PVPOS $PHPOS
         printf "$PLAYER"
-        tput cup $PVPOS $PHPOS
     fi
 }
 
@@ -76,7 +75,6 @@ runter() {
         PVPOS=$((PVPOS+1))
         tput cup $PVPOS $PHPOS
         printf "$PLAYER"
-        tput cup $PVPOS $PHPOS
     fi
 }
 
@@ -88,7 +86,6 @@ links() {
         PHPOS=$((PHPOS-1))
         tput cup $PVPOS $PHPOS
         printf "$PLAYER"
-        tput cup $PVPOS $PHPOS
     fi
 }
 
@@ -100,7 +97,6 @@ rechts() {
         PHPOS=$((PHPOS+1))
         tput cup $PVPOS $PHPOS
         printf "$PLAYER"
-        tput cup $PVPOS $PHPOS
     fi
 }  
 ghoch() {
@@ -111,7 +107,6 @@ ghoch() {
         GVPOS=$((GVPOS-1))
         tput cup $GVPOS $GHPOS
         printf "$ZIEL"
-        tput cup $GVPOS $GHPOS
     fi
 }
 
@@ -123,7 +118,6 @@ grunter() {
         GVPOS=$((GVPOS+1))
         tput cup $GVPOS $GHPOS
         printf "$ZIEL"
-        tput cup $GVPOS $GHPOS
     fi
 }
 
@@ -135,7 +129,6 @@ glinks() {
         GHPOS=$((GHPOS-1))
         tput cup $GVPOS $GHPOS
         printf "$ZIEL"
-        tput cup $GVPOS $GHPOS
     fi
 }
 
@@ -147,7 +140,6 @@ grechts() {
         GHPOS=$((GHPOS+1))
         tput cup $GVPOS $GHPOS
         printf "$ZIEL"
-        tput cup $GVPOS $GHPOS
     fi
 }
 
@@ -183,7 +175,7 @@ thewin() {                                                   # WIN. Cursor einbl
 clear
 opti                                                         # Funktion: Sind Optionen übergeben worden?
 tput civis                                                   # Cursor ausblenden
-echo "WASD zum Bewegen. B endet das Spiel."
+echo "WASD zum bewegen. B beendet das Spiel."
 VPOS=1
 zeichnerand                                                  # Funktion: Spielfeld zeichnen
 PHPOS=$((LCOL/2))
@@ -201,7 +193,7 @@ while [ 1 ];do
         ZEIT=$(date +%s)
     fi
 
-    GMOVE=$(( $RANDOM % 10 ))
+    GMOVE=$(( $RANDOM % 4 + 1))
 
     case $GMOVE in
         1) ghoch ;;
