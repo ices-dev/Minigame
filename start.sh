@@ -139,10 +139,10 @@ PHPOS=$((LCOL/2))
 PVPOS=$((LROW/2))
 GHPOS=$(( $RANDOM % $((LCOL-2)) + 1 ))
 GVPOS=$(( $RANDOM % $((LROW-3)) + 2 ))
-tput cup $GVPOS $GHPOS
+tput cup $GVPOS $GHPOS                                       # Gegner aufs Spielfeld
 printf "$ZIEL"
 tput cup $PVPOS $PHPOS
-printf "$PLAYER"
+printf "$PLAYER"                                             # Spieler aufs Feld
 tput cup $PVPOS $PHPOS
 while [ 1 ];do
     read -sn1 EING                        
