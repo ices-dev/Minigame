@@ -130,10 +130,10 @@ thewin() {                                                   # WIN. Cursor einbl
 
 ### Spiel
 clear
+opti                                                         # Funktion: Sind Optionen übergeben worden?
 tput civis                                                   # Cursor ausblenden
 echo "WASD zum Bewegen. B endet das Spiel."
 VPOS=1
-opti                                                         # Funktion: Sind Optionen übergeben worden?
 zeichnerand                                                  # Funktion: Spielfeld zeichnen
 PHPOS=$((LCOL/2))
 PVPOS=$((LROW/2))
