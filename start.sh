@@ -45,7 +45,7 @@ zeichnerand() {
 
     #Unten 
     VPOS=$((VPOS+1))
-    tput cup $VPOS $HPOS                                     # Spielfeld Start
+    tput cup $VPOS $HPOS                                     
     BREIT=0
     while (( $BREIT < $LCOL ));do
         printf "$BORDER"
@@ -100,6 +100,17 @@ rechts() {
     fi
 }
 
+opti() {                                                     # Abfrage Optionen
+    if (( $# == 2 ));then                                    # Sind genau Zwei Optionen übergeben?
+        if (( $1 > 40 ));then
+            let LCOL=$1                                      # Größer als Min-Breite
+        fi    
+        if (( $2 > 12 ));then                                # Größer als Min-Tiefe
+            let LROW=$2
+        fi
+    fi
+}
+
 theend() {                                                   # FIN. Cursor einblenden.
     VPOS=$((VPOS+1))    
     tput cup $VPOS 0
@@ -113,6 +124,7 @@ thewin() {                                                   # WIN. Cursor einbl
     tput cup $VPOS 0
     echo "Gewonnen in $ZEIT Sekunden!"
     tput cnorm
+    sleep 1
     exit 
 } 
 
@@ -121,7 +133,8 @@ clear
 tput civis                                                   # Cursor ausblenden
 echo "WASD zum Bewegen. B endet das Spiel."
 VPOS=1
-zeichnerand
+opti                                                         # Funktion: Sind Optionen übergeben worden?
+zeichnerand                                                  # Funktion: Spielfeld zeichnen
 PHPOS=$((LCOL/2))
 PVPOS=$((LROW/2))
 GHPOS=$(( $RANDOM % $((LCOL-2)) + 1 ))
