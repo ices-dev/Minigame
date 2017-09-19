@@ -7,13 +7,13 @@
 
 
 ### Variablen
-LCOL=40                                                      # Spielfeld Breite
-LROW=12                                                      # Spielfeld Tiefe
+LCOL=40                                                         # Spielfeld Breite
+LROW=12                                                         # Spielfeld Tiefe
 HPOS=0
 VPOS=0
-BORDER=X
-PLAYER=@
-ZIEL=*
+BORDER=X                                                        # Aussehen Rand
+PLAYER=@                                                        # Aussehen Spieler
+ZIEL=*                                                          # Aussehen Ziel
 ZEIT=0
 
 ### Funktionen
@@ -22,7 +22,7 @@ ZEIT=0
 
 zeichnerand() {
     #Oben
-    tput cup $VPOS $HPOS                                     # Spielfeld Start
+    tput cup $VPOS $HPOS                                        # Spielfeld Start
     BREIT=0
     while (( $BREIT < $LCOL ));do
         printf "$BORDER"
@@ -56,7 +56,7 @@ zeichnerand() {
 
 }
 
-hoch() {
+hoch() {                                                        # Spieler hoch
     if (( $PVPOS > 2 ));then
         tput cup $PVPOS $PHPOS
         printf " "
@@ -67,7 +67,7 @@ hoch() {
     fi
 }
 
-runter() {
+runter() {                                                      # Spieler runter
     if (( $PVPOS < $((LROW-1)) ));then
         tput cup $PVPOS $PHPOS
         printf " "
@@ -78,7 +78,7 @@ runter() {
     fi
 }
 
-links() {
+links() {                                                       # Spieler links
     if (( $PHPOS > 1 ));then
         tput cup $PVPOS $PHPOS
         printf " "
@@ -89,7 +89,7 @@ links() {
     fi
 }
 
-rechts() {
+rechts() {                                                      # Spieler rechts
     if (( $PHPOS < $((LCOL-2)) ));then
         tput cup $PVPOS $PHPOS
         printf " "
@@ -99,7 +99,8 @@ rechts() {
         printf "$PLAYER"
     fi
 }  
-ghoch() {
+
+ghoch() {                                                       # Ziel hoch
     if (( $GVPOS > 2 ));then
         tput cup $GVPOS $GHPOS
         printf " "
@@ -110,7 +111,7 @@ ghoch() {
     fi
 }
 
-grunter() {
+grunter() {                                                     # Ziel runter
     if (( $GVPOS < $((LROW-1)) ));then
         tput cup $GVPOS $GHPOS
         printf " "
@@ -121,7 +122,7 @@ grunter() {
     fi
 }
 
-glinks() {
+glinks() {                                                      # Ziel links
     if (( $GHPOS > 1 ));then
         tput cup $GVPOS $GHPOS
         printf " "
@@ -132,7 +133,7 @@ glinks() {
     fi
 }
 
-grechts() {
+grechts() {                                                     # Ziel rechts
     if (( $GHPOS < $((LCOL-2)) ));then
         tput cup $GVPOS $GHPOS
         printf " "
@@ -143,29 +144,29 @@ grechts() {
     fi
 }
 
-opti() {                                                     # Abfrage Optionen
-    if (( $# == 2 ));then                                    # Sind genau Zwei Optionen übergeben?
+opti() {                                                        # Abfrage Optionen
+    if (( $# == 2 ));then                                       # Sind genau Zwei Optionen übergeben?
         if (( $1 > 40 ));then
-            let LCOL=$1                                      # Größer als Min-Breite
+            let LCOL=$1                                         # Größer als Min-Breite
         fi    
-        if (( $2 > 12 ));then                                # Größer als Min-Tiefe
+        if (( $2 > 12 ));then                                   # Größer als Min-Tiefe
             let LROW=$2
         fi
     fi
 }
 
-theend() {                                                   # FIN. Cursor einblenden.
+theend() {                                                      # FIN. Cursor einblenden.
     VPOS=$((VPOS+1))    
     tput cup $VPOS 0
     tput cnorm
     exit 
 }
 
-thewin() {                                                   # WIN. Cursor einblenden.
-    ZEIT=$(( $(date +%s) - $ZEIT ))
+thewin() {                                                      # WIN. Cursor einblenden.
+    ZEIT=$(( $(date +%s) - $ZEIT ))                             # Berechnung Spielzeit
     VPOS=$((VPOS+1))    
     tput cup $VPOS 0
-    echo "Gewonnen in $ZEIT Sekunden!"
+    echo " Gewonnen in $ZEIT Sekunden!"
     tput cnorm
     sleep 1
     exit 
@@ -173,43 +174,45 @@ thewin() {                                                   # WIN. Cursor einbl
 
 ### Spiel
 clear
-opti                                                         # Funktion: Sind Optionen übergeben worden?
-tput civis                                                   # Cursor ausblenden
-echo "WASD zum bewegen. B beendet das Spiel."
+opti                                                            # Funktion: Sind Optionen übergeben worden?
+tput civis                                                      # Cursor ausblenden
+echo " WASD zum bewegen. B beendet das Spiel."
 VPOS=1
-zeichnerand                                                  # Funktion: Spielfeld zeichnen
+zeichnerand                                                     # Funktion: Spielfeld zeichnen
 PHPOS=$((LCOL/2))
 PVPOS=$((LROW/2))
 GHPOS=$(( $RANDOM % $((LCOL-2)) + 1 ))
 GVPOS=$(( $RANDOM % $((LROW-3)) + 2 ))
-tput cup $GVPOS $GHPOS                                       # Gegner aufs Spielfeld
+tput cup $GVPOS $GHPOS                                          # Gegner aufs Spielfeld
 printf "$ZIEL"
 tput cup $PVPOS $PHPOS
-printf "$PLAYER"                                             # Spieler aufs Feld
+printf "$PLAYER"                                                # Spieler aufs Feld
 tput cup $PVPOS $PHPOS
-while [ 1 ];do
-    read -sn1 EING                        
-    if (( $ZEIT == 0 ));then
+while [ 1 ];do                                                  # Spielschleife
+    read -sn1 EING
+
+    if (( $ZEIT == 0 ));then                                    # Start Spielzeit
         ZEIT=$(date +%s)
     fi
 
-    GMOVE=$(( $RANDOM % 4 + 1))
-
-    case $GMOVE in
-        1) ghoch ;;
-        2) grunter ;;
-        3) glinks ;;
-        4) grechts ;;
-    esac
-
-    case $EING in
+    case $EING in                                               # Bewegung Spieler
         w) hoch ;;
         s) runter ;;
         a) links ;;
         d) rechts ;;
         b) theend ;;
     esac
-    if (( $GVPOS == $PVPOS )) && (( $GHPOS == $PHPOS ));then
+
+    if (( $GVPOS == $PVPOS )) && (( $GHPOS == $PHPOS ));then    # Abfrage Sieg
         thewin
-    fi
+    fi 
+
+    GMOVE=$(( $RANDOM % 5 ))                                    # Bewegung Ziel
+
+    case $GMOVE in
+        1) ghoch ;;
+        2) grunter ;;
+        3) glinks ;;
+        4) grechts ;;
+    esac                             
 done
