@@ -14,6 +14,7 @@ VPOS=0
 BORDER=X
 PLAYER=@
 ZIEL=*
+ZEIT=0
 
 ### Funktionen
 
@@ -107,9 +108,10 @@ theend() {                                                   # FIN. Cursor einbl
 }
 
 thewin() {                                                   # WIN. Cursor einblenden.
+    ZEIT=$(( $(date +%s) - $ZEIT ))
     VPOS=$((VPOS+1))    
     tput cup $VPOS 0
-    echo "Gewonnen!"
+    echo "Gewonnen in $ZEIT Sekunden!"
     tput cnorm
     exit 
 } 
@@ -122,8 +124,6 @@ VPOS=1
 zeichnerand
 PHPOS=$((LCOL/2))
 PVPOS=$((LROW/2))
-#RHPOS=$((LCOL-2))
-#RVPOS=$((LROW-3))
 GHPOS=$(( $RANDOM % $((LCOL-2)) + 1 ))
 GVPOS=$(( $RANDOM % $((LROW-3)) + 2 ))
 tput cup $GVPOS $GHPOS
@@ -133,6 +133,9 @@ printf "$PLAYER"
 tput cup $PVPOS $PHPOS
 while [ 1 ];do
     read -sn1 EING                        
+    if (( $ZEIT == 0 ));then
+        ZEIT=$(date +%s)
+    fi    
     case $EING in
         w) hoch ;;
         s) runter ;;
