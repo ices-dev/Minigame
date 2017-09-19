@@ -3,7 +3,7 @@
 # Ein sinnloses Spiel um tput zu üben
 # 
 # ices@posteo.de
-# 14.09.2017
+# 19.09.2017
 
 
 ### Variablen
@@ -13,7 +13,7 @@ HPOS=0
 VPOS=0
 BORDER=X
 PLAYER=@
-ZEIL=*
+ZIEL=*
 
 ### Funktionen
 
@@ -21,7 +21,7 @@ ZEIL=*
 
 zeichnerand() {
     #Oben
-    tput cup $VPOS $HPOS                                  # Spielfeld Start
+    tput cup $VPOS $HPOS                                     # Spielfeld Start
     BREIT=0
     while (( $BREIT < $LCOL ));do
         printf "$BORDER"
@@ -44,7 +44,7 @@ zeichnerand() {
 
     #Unten 
     VPOS=$((VPOS+1))
-    tput cup $VPOS $HPOS                                  # Spielfeld Start
+    tput cup $VPOS $HPOS                                     # Spielfeld Start
     BREIT=0
     while (( $BREIT < $LCOL ));do
         printf "$BORDER"
@@ -56,48 +56,57 @@ zeichnerand() {
 }
 
 hoch() {
-    printf " "
-    tput cup $PVPOS $PHPOS
-    PVPOS=$((PVPOS-1))
-    tput cup $PVPOS $PHPOS
-    printf "$PLAYER"
-    tput cup $PVPOS $PHPOS
+    if (( $PVPOS > 2 ));then
+        printf " "
+        tput cup $PVPOS $PHPOS
+        PVPOS=$((PVPOS-1))
+        tput cup $PVPOS $PHPOS
+        printf "$PLAYER"
+        tput cup $PVPOS $PHPOS
+    fi
 }
 
-runter() {                  
-    printf " "
-    tput cup $PVPOS $PHPOS
-    PVPOS=$((PVPOS+1))
-    tput cup $PVPOS $PHPOS
-    printf "$PLAYER"
-    tput cup $PVPOS $PHPOS  
+runter() {
+    if (( $PVPOS < $((LROW-1)) ));then
+        printf " "
+        tput cup $PVPOS $PHPOS
+        PVPOS=$((PVPOS+1))
+        tput cup $PVPOS $PHPOS
+        printf "$PLAYER"
+        tput cup $PVPOS $PHPOS
+    fi
 }
 
 links() {
-    printf " "
-    tput cup $PVPOS $PHPOS
-    PHPOS=$((PHPOS-1))
-    tput cup $PVPOS $PHPOS
-    printf "$PLAYER"
-    tput cup $PVPOS $PHPOS  
+    if (( $PHPOS > 1 ));then
+        printf " "
+        tput cup $PVPOS $PHPOS
+        PHPOS=$((PHPOS-1))
+        tput cup $PVPOS $PHPOS
+        printf "$PLAYER"
+        tput cup $PVPOS $PHPOS
+    fi
 }
 
-rechts() {                  
-    printf " "
-    tput cup $PVPOS $PHPOS
-    PHPOS=$((PHPOS+1))
-    tput cup $PVPOS $PHPOS
-    printf "$PLAYER"
-    tput cup $PVPOS $PHPOS  
+rechts() {
+    if (( $PHPOS < $((LCOL-2)) ));then
+        printf " "
+        tput cup $PVPOS $PHPOS
+        PHPOS=$((PHPOS+1))
+        tput cup $PVPOS $PHPOS
+        printf "$PLAYER"
+        tput cup $PVPOS $PHPOS
+    fi
 }
 
-theend() {                                                  # FIN. Cursor einblenden.
-    tput cup $VPOS $HPOS
+theend() {                                                   # FIN. Cursor einblenden.
+    VPOS=$((VPOS+1))    
+    tput cup $VPOS 0
     tput cnorm
     exit 
 }
 
-thewin() {                                                  # WIN. Cursor einblenden.
+thewin() {                                                   # WIN. Cursor einblenden.
     VPOS=$((VPOS+1))    
     tput cup $VPOS 0
     echo "Gewonnen!"
@@ -107,16 +116,18 @@ thewin() {                                                  # WIN. Cursor einble
 
 ### Spiel
 clear
-tput civis                                              # Cursor ausblenden
+tput civis                                                   # Cursor ausblenden
 echo "WASD zum Bewegen. B endet das Spiel."
 VPOS=1
 zeichnerand
 PHPOS=$((LCOL/2))
 PVPOS=$((LROW/2))
+#RHPOS=$((LCOL-2))
+#RVPOS=$((LROW-3))
 GHPOS=$(( $RANDOM % $((LCOL-2)) + 1 ))
-GVPOS=$(( $RANDOM % $((LROW-3)) + 1 ))
+GVPOS=$(( $RANDOM % $((LROW-3)) + 2 ))
 tput cup $GVPOS $GHPOS
-printf "$ZEIL"
+printf "$ZIEL"
 tput cup $PVPOS $PHPOS
 printf "$PLAYER"
 tput cup $PVPOS $PHPOS
