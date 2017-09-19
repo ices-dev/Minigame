@@ -58,6 +58,7 @@ zeichnerand() {
 
 hoch() {
     if (( $PVPOS > 2 ));then
+        tput cup $PVPOS $PHPOS
         printf " "
         tput cup $PVPOS $PHPOS
         PVPOS=$((PVPOS-1))
@@ -69,6 +70,7 @@ hoch() {
 
 runter() {
     if (( $PVPOS < $((LROW-1)) ));then
+        tput cup $PVPOS $PHPOS
         printf " "
         tput cup $PVPOS $PHPOS
         PVPOS=$((PVPOS+1))
@@ -80,6 +82,7 @@ runter() {
 
 links() {
     if (( $PHPOS > 1 ));then
+        tput cup $PVPOS $PHPOS
         printf " "
         tput cup $PVPOS $PHPOS
         PHPOS=$((PHPOS-1))
@@ -91,12 +94,60 @@ links() {
 
 rechts() {
     if (( $PHPOS < $((LCOL-2)) ));then
+        tput cup $PVPOS $PHPOS
         printf " "
         tput cup $PVPOS $PHPOS
         PHPOS=$((PHPOS+1))
         tput cup $PVPOS $PHPOS
         printf "$PLAYER"
         tput cup $PVPOS $PHPOS
+    fi
+}  
+ghoch() {
+    if (( $GVPOS > 2 ));then
+        tput cup $GVPOS $GHPOS
+        printf " "
+        tput cup $GVPOS $GHPOS
+        GVPOS=$((GVPOS-1))
+        tput cup $GVPOS $GHPOS
+        printf "$ZIEL"
+        tput cup $GVPOS $GHPOS
+    fi
+}
+
+grunter() {
+    if (( $GVPOS < $((LROW-1)) ));then
+        tput cup $GVPOS $GHPOS
+        printf " "
+        tput cup $GVPOS $GHPOS
+        GVPOS=$((GVPOS+1))
+        tput cup $GVPOS $GHPOS
+        printf "$ZIEL"
+        tput cup $GVPOS $GHPOS
+    fi
+}
+
+glinks() {
+    if (( $GHPOS > 1 ));then
+        tput cup $GVPOS $GHPOS
+        printf " "
+        tput cup $GVPOS $GHPOS
+        GHPOS=$((GHPOS-1))
+        tput cup $GVPOS $GHPOS
+        printf "$ZIEL"
+        tput cup $GVPOS $GHPOS
+    fi
+}
+
+grechts() {
+    if (( $GHPOS < $((LCOL-2)) ));then
+        tput cup $GVPOS $GHPOS
+        printf " "
+        tput cup $GVPOS $GHPOS
+        GHPOS=$((GHPOS+1))
+        tput cup $GVPOS $GHPOS
+        printf "$ZIEL"
+        tput cup $GVPOS $GHPOS
     fi
 }
 
@@ -148,7 +199,17 @@ while [ 1 ];do
     read -sn1 EING                        
     if (( $ZEIT == 0 ));then
         ZEIT=$(date +%s)
-    fi    
+    fi
+
+    GMOVE=$(( $RANDOM % 10 ))
+
+    case $GMOVE in
+        1) ghoch ;;
+        2) grunter ;;
+        3) glinks ;;
+        4) grechts ;;
+    esac
+
     case $EING in
         w) hoch ;;
         s) runter ;;
