@@ -2,7 +2,8 @@
 
 # Ein sinnloses Spiel um tput zu üben
 #
-# Mit der übergabe von 2 Zahlen lässt sich die Spielfeldgröße einstellen
+# Mit der übergabe von 2 Zahlen lässt sich die Spielfeldgröße einstellen.
+# Wenn man zusätzlich als 3. Parameter "vim" übergibt wird mit HJKL gesteuert.
 #
 # Author        :       ices@posteo.de
 # Last Edit     :       21.09.2017
@@ -17,6 +18,11 @@ BORDER=X                                                        # Aussehen Rand
 PLAYER=@                                                        # Aussehen Spieler
 ZIEL=*                                                          # Aussehen Ziel
 ZEIT=0
+UP="w"
+DOWN="s"
+LEFT="a"
+RIGHT="d"
+MKEYS="WASD"
 
 ### Funktionen
 
@@ -147,12 +153,25 @@ grechts() {                                                     # Ziel rechts
 }
 
 parameter() {                                                   # Abfrage Optionen
-    if (( $# == 2 ));then                                       # Sind genau Zwei Optionen übergeben?
+    if (( $# == 1 ));then
+        if [[ $1 == "-h" ]] || [[ $1 == "--help" ]];then
+            hilfe
+            exit
+        fi
+    fi
+    if (( $# >= 2 ));then                                       # Sind genau Zwei Optionen übergeben?
         if (( $1 > 40 ));then
             let LCOL=$1                                         # Größer als Min-Breite
         fi    
         if (( $2 > 12 ));then                                   # Größer als Min-Tiefe
             let LROW=$2
+        fi
+        if [[ $3 == "vim" ]];then
+            MKEYS="HJKL"    
+            UP="k"
+            DOWN="j"
+            LEFT="h"
+            RIGHT="l"
         fi
     fi
 }
@@ -174,11 +193,17 @@ thewin() {                                                      # WIN. Cursor ei
     exit 
 } 
 
+hilfe() {
+    echo "    usage: $0 [COLUMNS] [ROWS]"
+    echo "           $0 [COLUMNS] [ROWS] [OPTION]"
+    echo "  options: vim -- hjkl movement"
+}
+
 ### Spiel
+parameter $1 $2 $3                                              # Funktion: Sind Optionen übergeben worden?
 clear
-parameter $1 $2                                                 # Funktion: Sind Optionen übergeben worden?
 tput civis                                                      # Cursor ausblenden
-echo " WASD zum bewegen. B beendet das Spiel."
+echo " $MKEYS zum bewegen. B beendet das Spiel."
 VPOS=1
 zeichnerand                                                     # Funktion: Spielfeld zeichnen
 PHPOS=$((LCOL/2))
@@ -198,10 +223,10 @@ while [ 1 ];do                                                  # Spielschleife
     fi
 
     case $EING in                                               # Bewegung Spieler
-        w) hoch ;;
-        s) runter ;;
-        a) links ;;
-        d) rechts ;;
+        $UP) hoch ;;
+        $DOWN) runter ;;
+        $LEFT) links ;;
+        $RIGHT) rechts ;;
         b) theend ;;
     esac
 
