@@ -158,6 +158,8 @@ parameter() {                                                   # Abfrage Option
             hilfe
             exit
         fi
+        echo "Type -h or --help for Options"
+        exit
     fi
     if (( $# >= 2 ));then                                       # Sind genau Zwei Optionen übergeben?
         if (( $1 > 40 ));then
@@ -193,10 +195,15 @@ thewin() {                                                      # WIN. Cursor ei
     exit 
 } 
 
-hilfe() {
+hilfe() {                                                       # Hilfefunktion
     echo "    usage: $0 [COLUMNS] [ROWS]"
     echo "           $0 [COLUMNS] [ROWS] [OPTION]"
+    echo ""
     echo "  options: vim -- hjkl movement"
+    echo "         : columns <40 = default"
+    echo "         : rows    <12 = default"
+    echo ""
+    echo "  example: '$0 0 0 vim' would start a default field with vim controls"
 }
 
 ### Spiel
