@@ -1,9 +1,11 @@
 #!/bin/bash
 
 # Ein sinnloses Spiel um tput zu üben
-# 
-# ices@posteo.de
-# 19.09.2017
+#
+# Mit der übergabe von 2 Zahlen lässt sich die Spielfeldgröße einstellen
+#
+# Author        :       ices@posteo.de
+# Last Edit     :       21.09.2017
 
 
 ### Variablen
@@ -144,7 +146,7 @@ grechts() {                                                     # Ziel rechts
     fi
 }
 
-opti() {                                                        # Abfrage Optionen
+parameter() {                                                   # Abfrage Optionen
     if (( $# == 2 ));then                                       # Sind genau Zwei Optionen übergeben?
         if (( $1 > 40 ));then
             let LCOL=$1                                         # Größer als Min-Breite
@@ -174,7 +176,7 @@ thewin() {                                                      # WIN. Cursor ei
 
 ### Spiel
 clear
-opti                                                            # Funktion: Sind Optionen übergeben worden?
+parameter $1 $2                                                 # Funktion: Sind Optionen übergeben worden?
 tput civis                                                      # Cursor ausblenden
 echo " WASD zum bewegen. B beendet das Spiel."
 VPOS=1
