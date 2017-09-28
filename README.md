@@ -16,3 +16,6 @@ X                                      X
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
  Gewonnen in 63 Sekunden!
 ```
+
+Link to Blogpost:
+https://www.zsh.ninja/simples-bash-spiel/
